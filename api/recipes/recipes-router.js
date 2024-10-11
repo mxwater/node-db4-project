@@ -3,6 +3,17 @@ const router = express.Router();
 const Recipes = require('./recipes-model');
 
 
+router.use('*', (req, res, next) => {
+  res.json({api: 'up'})
+})
+
+router.use((err, req, res, next) => {
+  res.status(500).json({
+    customMessage: 'something went wrong inside the recipes router',
+    message: err.message,
+    stack: err.stack,
+  })
+})
 
 router.get('/:id', async (req, res, next) => {
   try {

@@ -1,14 +1,9 @@
-const express = require('express');
+require('dotenv').config()
 
-const server = express();
+const server = require('./api/server.js');
 
-const recipesRouter = require('./api/recipes-router');
+const port = process.env.PORT;
 
-
-server.use(express.json());
-server.use('/api/recipes', recipesRouter); // 
-
-const port = process.env.PORT || 9000;
 server.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`\nAPI running on port ${port}\n`);
 });
