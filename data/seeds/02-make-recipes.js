@@ -45,13 +45,7 @@ const step_ingredients = [
 
 
 exports.seed = async function(knex) {
-    // Deletes ALL existing entries
-    await knex('step_ingredients').del();
-    await knex('steps').del();
-    await knex('ingredients').del();
-    await knex('recipes').del();
 
-    // Inserts seed entries
     await knex('recipes').insert(recipes);
     await knex('ingredients').insert(ingredients);
     await knex('steps').insert(steps);
