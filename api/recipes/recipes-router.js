@@ -1,30 +1,28 @@
 const express = require('express');
 const router = express.Router();
-const Recipes = require('./recipes-model');
+const Recipe = require('./recipes-model');
 
 
-router.use('*', (req, res, next) => {
-  res.json({api: 'up'})
-})
+router.get('/:recipe_id', (req, res, next) => {
+  Recipe.getRecipeById(req.params.recipe_id)
+    .then(recipe => { 
+      if (recipe) {
+        res.status(200).json(recipe);
+      } else {
+        res.status(404).json({ message: 'Recipe not found' });
+      }
+    })
+    .catch(next);
+});
+
+
 
 router.use((err, req, res, next) => {
   res.status(500).json({
-    customMessage: 'something went wrong inside the recipes router',
+    customMessage: 'Something went wrong inside the recipes router',
     message: err.message,
     stack: err.stack,
-  })
-})
-
-router.get('/:id', async (req, res, next) => {
-  try {
-    const recipe = await Recipes.getRecipeById(req.params.id);
-    if (!recipe) {
-      return res.status(404).json({ message: 'Recipe not found' });
-    }
-    res.json(recipe);
-  } catch (err) {
-    next(err);
-  }
+  });
 });
 
 module.exports = router;
